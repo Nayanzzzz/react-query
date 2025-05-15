@@ -1,3 +1,4 @@
+
 import './globals.css';
 import { ReactQueryProvider } from './providers/react-query-provider';
 

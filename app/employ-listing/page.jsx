@@ -51,9 +51,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TablePagination } from "./_components/number-pagination";
+
 
 export default function CustomerTable() {
   const queryClient = useQueryClient();
+
 
   const handleReset = async () => {
     await queryClient.removeQueries(["employ"]);
@@ -181,6 +184,7 @@ export default function CustomerTable() {
         return <div>{row.getValue("salary")}</div>;
       },
     },
+
     {
       accessorKey: "Edit",
       cell: ({ row }) => {
@@ -191,13 +195,15 @@ export default function CustomerTable() {
             <Pen
               className="cursor-pointer w-4 h-4"
               onClick={() => {
-                router.push(`/employ-listing/edit?id=${id}`);
+                 router.push(`/employ-listing/${id}/edit`);
               }}
             />
           </div>
         );
       },
     },
+
+  
     {
       accessorKey: "Delete",
       cell: ({ row }) => {
@@ -239,36 +245,7 @@ export default function CustomerTable() {
       },
     },
 
-    // {
-    //   id: "actions",
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     const customer = row.original;
-
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <MoreHorizontal className="h-4 w-4" />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-    //           <DropdownMenuItem
-    //             onClick={() => navigator.clipboard.writeText(customer.email)}
-    //           >
-    //             Copy email address
-    //           </DropdownMenuItem>
-    //           <DropdownMenuSeparator />
-    //           <DropdownMenuItem>View customer details</DropdownMenuItem>
-    //           <DropdownMenuItem>Edit customer</DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-
-    //     );
-    //   },
-    // },
+    
   ];
 
   const { data: employ, refetch } = useQuery({
@@ -285,7 +262,7 @@ export default function CustomerTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10, // ← show only 5 rows per page
+    pageSize: 3, // ← show only 5 rows per page
   });
 
   const table = useReactTable({
@@ -322,7 +299,7 @@ export default function CustomerTable() {
             className="max-w-sm"
           />
 
-          {/* <Button variant="outline" className="ml-52">Only Selected Employ Delete</Button> */}
+
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -476,7 +453,7 @@ export default function CustomerTable() {
               Delete All
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={() => table.previousPage()}
@@ -491,8 +468,10 @@ export default function CustomerTable() {
               disabled={!table.getCanNextPage()}
             >
               Next
-            </Button>
+            </Button> */}
+
           </div>
+          <TablePagination table={table} />
         </div>
       </div>
     </div>
